@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Client';
+import Callback from './components/Callback';
+import SpotifyData from './components/SpotifyData';
+import Playlists from './components/Playlists';
+import PlaylistData from './components/PlaylistData';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/callback" element={<Callback />} />
+                <Route path="/spotify-data" element={<SpotifyData />} />
+                <Route path="/playlists" element={<Playlists />} />
+                <Route path="/playlist-data/:id" element={<PlaylistData />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
