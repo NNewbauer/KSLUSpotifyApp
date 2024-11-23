@@ -1,11 +1,10 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './components/Client';
 import Callback from './components/Callback';
 import SpotifyData from './components/SpotifyData';
 import Playlists from './components/Playlists';
 import PlaylistData from './components/PlaylistData';
-
 
 function App() {
     return (
