@@ -2,7 +2,7 @@
   "name": "spotify_listeners",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://nnewbauer.github.io/KSLUSpotifyApp.github.io/",
+  "homepage": "https://nnewbauer.github.io/KSLUSpotifyApp/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
