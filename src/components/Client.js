@@ -4,7 +4,7 @@ const CLIENT_ID = '8572ae1ee0a344a08239363554aaaf86'; // Your Spotify Client ID
 const REDIRECT_URI =
     process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000/callback'
-        : 'https://your-github-username.github.io/your-repo-name/callback';
+        : 'https://nnewbauer.github.io/KSLUSpotifyApp.github.io/callback';
 const SCOPES = [
     'user-read-private',
     'user-read-email',
