@@ -73,7 +73,7 @@ const PlaylistData = () => {
         alert('No access token found.');
         return;
       }
-
+  
       setLoading(true);
       try {
         const response = await fetch(`https://api.spotify.com/v1/playlists/${id}`, {
@@ -81,43 +81,44 @@ const PlaylistData = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+  
         if (!response.ok) {
           const errorData = await response.json();
           alert('Spotify API Error:', errorData);
           setLoading(false);
           return;
         }
-
+  
         const data = await response.json();
         setPlaylist(data);
-
-        // Fetch popularity and genres for each track
-        data.tracks.items.forEach(async (trackItem) => {
+  
+        // Fetch all artist popularity and track genres in parallel
+        const popularityPromises = [];
+        const genrePromises = [];
+  
+        data.tracks.items.forEach((trackItem) => {
           trackItem.track.artists.forEach((artist) => {
             if (!artistPopularity[artist.id]) {
-              fetchArtistPopularity(artist.id); // Fetch the popularity of the artist
+              popularityPromises.push(fetchArtistPopularity(artist.id));
             }
           });
-
+  
           const trackId = trackItem.track.id;
           if (trackId && !trackGenres[trackId]) {
-            const genres = await fetchTrackGenres(trackId);
-            setTrackGenres((prevState) => ({
-              ...prevState,
-              [trackId]: genres,
-            }));
+            genrePromises.push(fetchTrackGenres(trackId));
           }
         });
+  
+        await Promise.all([...popularityPromises, ...genrePromises]);
       } catch (error) {
         alert('Error fetching playlist data:', error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchPlaylistData();
-  }, [id]);  // Only trigger this when the playlist ID changes (initial load)
+  }, [id]);
 
   if (loading) {
     return <p>Loading playlist data...</p>;
