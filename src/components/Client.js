@@ -14,14 +14,16 @@ const SCOPES = [
 const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${SCOPES.join('%20')}`;
 
 const Login = () => {
-    const handleLogin = () => {
-        window.location.href = AUTH_URL; // Redirect to Spotify login
-    };
-
     return (
         <div>
             <h1>Spotify React App</h1>
-            <button onClick={handleLogin}>Log in with Spotify</button>
+            <button onClick={() => window.location.href = AUTH_URL}>
+                Log in with Spotify
+            </button>
+            <p>
+                NOTE: Spotify login is required. Log in with the username/password associated with your Spotify account.
+                Google, Facebook, and Apple logins are NOT supported.
+            </p>
         </div>
     );
 };

@@ -36,6 +36,27 @@ const PlaylistData = () => {
     }
   };
 
+  const getSongGenres = async (trackId, token) => {
+    try {
+        // Step 1: Get track details
+        const trackDetails = await getTrackDetails(trackId, token);
+        const artists = trackDetails.artists;
+
+        // Step 2: Fetch genres for each artist
+        const genrePromises = artists.map((artist) => getArtistGenres(artist.id, token));
+        const genresPerArtist = await Promise.all(genrePromises);
+
+        // Step 3: Combine all genres
+        const allGenres = genresPerArtist.flat();
+        const uniqueGenres = [...new Set(allGenres)]; // Remove duplicates
+
+        return uniqueGenres;
+    } catch (error) {
+        console.error('Error fetching song genres:', error);
+        throw error;
+    }
+};
+
   useEffect(() => {
     const fetchPlaylistData = async () => {
       const token = localStorage.getItem('spotifyToken');
@@ -99,9 +120,10 @@ const PlaylistData = () => {
           {trackItem.track.artists.map((artist) => (
             <p key={artist.id}>
               <b>{artist.name}</b> – Popularity Score: {artistPopularity[artist.id] !== undefined ? artistPopularity[artist.id] : 'Loading...'}
+              Followers: {artist.followers.total}
             </p>
-
           ))}
+          <p><b>Genres:</b> {trackGenres[trackItem.track.id]?.join(', ') || 'Loading...'} </p>
 
           {/* Audio player */}
           {trackItem.track.preview_url ? (
