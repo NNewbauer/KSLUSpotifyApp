@@ -21,7 +21,9 @@ const Login = () => {
                 Log in with Spotify
             </button>
             <p>
-                NOTE: Spotify login is required. Log in with the username/password associated with your Spotify account.
+                NOTE: Spotify login is required. Log in with username/password associated with your Spotify account.
+            </p>
+            <p>
                 Google, Facebook, and Apple logins are NOT supported.
             </p>
         </div>
