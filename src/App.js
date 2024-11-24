@@ -6,10 +6,9 @@ import SpotifyData from './components/SpotifyData';
 import Playlists from './components/Playlists';
 import PlaylistData from './components/PlaylistData';
 
-
 function App() {
     return (
-        <Router>
+        <Router basename="/KSLUSpotifyApp.github.io">
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/callback" element={<Callback />} />
