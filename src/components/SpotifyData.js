@@ -9,7 +9,6 @@ const SpotifyData = () => {
 
     useEffect(() => {
         const fetchUserData = async () => {
-            // Debug: Check if we have a token
             console.log('Token available:', !!token);
             if (!token) {
                 console.log('No token found, redirecting to login...');
@@ -18,7 +17,6 @@ const SpotifyData = () => {
             }
 
             try {
-                // Debug: Log the request headers
                 console.log('Making request with token:', `Bearer ${token.substring(0, 20)}...`);
                 
                 const response = await fetch('https://api.spotify.com/v1/me', {
@@ -29,7 +27,6 @@ const SpotifyData = () => {
                     }
                 });
 
-                // Debug: Log the response status
                 console.log('Response status:', response.status);
 
                 if (!response.ok) {

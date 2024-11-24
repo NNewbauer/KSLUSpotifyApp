@@ -3,14 +3,15 @@ import '../styles.css';
 import { useParams } from 'react-router-dom';
 
 const PlaylistData = () => {
-  const { id } = useParams();  // Retrieve the playlist ID from the URL params
+  const { id } = useParams();
   const [playlist, setPlaylist] = useState(null);
   const [loading, setLoading] = useState(true);
   const [artistPopularity, setArtistPopularity] = useState({});
+  const [trackGenres, setTrackGenres] = useState({});
 
   // Fetch artist popularity data
   const fetchArtistPopularity = async (artistId) => {
-    const token = localStorage.getItem('spotifyToken');  // Assuming you have the access token stored
+    const token = localStorage.getItem('spotifyToken');
     
     if (!token) {
       alert('No access token found.');
@@ -26,36 +27,44 @@ const PlaylistData = () => {
 
       const data = await response.json();
       const popularity = data.popularity;  // Popularity of the artist
+      const followers = data.followers;  // Number of followers of the artist
 
       setArtistPopularity((prevState) => ({
         ...prevState,
-        [artistId]: popularity,  // Save the popularity of this artist by their ID
+        [artistId]: {popularity, followers: followers.total} // Save the popularity of this artist by their ID
       }));
     } catch (error) {
       console.error('Error fetching artist popularity:', error);
     }
   };
 
-  const getSongGenres = async (trackId, token) => {
+  // Fetch genres for a track
+  const fetchTrackGenres = async (trackId) => {
+    const token = localStorage.getItem('spotifyToken');
+    if (!token) return [];
+
     try {
-        // Step 1: Get track details
-        const trackDetails = await getTrackDetails(trackId, token);
-        const artists = trackDetails.artists;
+      const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const trackData = await response.json();
 
-        // Step 2: Fetch genres for each artist
-        const genrePromises = artists.map((artist) => getArtistGenres(artist.id, token));
-        const genresPerArtist = await Promise.all(genrePromises);
+      const genrePromises = trackData.artists.map(async (artist) => {
+        const artistResponse = await fetch(`https://api.spotify.com/v1/artists/${artist.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const artistData = await artistResponse.json();
+        return artistData.genres || [];
+      });
 
-        // Step 3: Combine all genres
-        const allGenres = genresPerArtist.flat();
-        const uniqueGenres = [...new Set(allGenres)]; // Remove duplicates
-
-        return uniqueGenres;
+      const genresPerArtist = await Promise.all(genrePromises);
+      const uniqueGenres = [...new Set(genresPerArtist.flat())]; // Remove duplicates
+      return uniqueGenres;
     } catch (error) {
-        console.error('Error fetching song genres:', error);
-        throw error;
+      console.error('Error fetching track genres:', error);
+      return [];
     }
-};
+  };
 
   useEffect(() => {
     const fetchPlaylistData = async () => {
@@ -81,15 +90,24 @@ const PlaylistData = () => {
         }
 
         const data = await response.json();
-        setPlaylist(data);  // Set the playlist data in state
+        setPlaylist(data);
 
-        // Fetch popularity for each artist in the playlist immediately
-        data.tracks.items.forEach((trackItem) => {
+        // Fetch popularity and genres for each track
+        data.tracks.items.forEach(async (trackItem) => {
           trackItem.track.artists.forEach((artist) => {
             if (!artistPopularity[artist.id]) {
-              fetchArtistPopularity(artist.id);  // Immediately fetch the popularity of the artist
+              fetchArtistPopularity(artist.id); // Fetch the popularity of the artist
             }
           });
+
+          const trackId = trackItem.track.id;
+          if (trackId && !trackGenres[trackId]) {
+            const genres = await fetchTrackGenres(trackId);
+            setTrackGenres((prevState) => ({
+              ...prevState,
+              [trackId]: genres,
+            }));
+          }
         });
       } catch (error) {
         alert('Error fetching playlist data:', error);
@@ -112,7 +130,7 @@ const PlaylistData = () => {
       {playlist?.tracks.items.map((trackItem, index) => (
         <div key={index}>
           <img
-              src={trackItem.track.album.images[0].url} // Get the largest image (usually index 0)
+              src={trackItem.track.album.images[0].url}
               alt={trackItem.track.album.name}
               style={{ width: 200, height: 200 }}
             />
@@ -120,7 +138,7 @@ const PlaylistData = () => {
           {trackItem.track.artists.map((artist) => (
             <p key={artist.id}>
               <b>{artist.name}</b> – Popularity Score: {artistPopularity[artist.id] !== undefined ? artistPopularity[artist.id] : 'Loading...'}
-              Followers: {artist.followers.total}
+              Followers: {artistPopularity[artist.id] !== undefined ? artistPopularity[artist.id].followers : 'Loading...'}
             </p>
           ))}
           <p><b>Genres:</b> {trackGenres[trackItem.track.id]?.join(', ') || 'Loading...'} </p>

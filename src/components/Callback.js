@@ -56,7 +56,6 @@ const Callback = () => {
                     localStorage.setItem('spotifyRefreshToken', data.refresh_token);
                 }
 
-                // Navigate to data page
                 navigate('/spotify-data');
                 
             } catch (err) {
@@ -65,7 +64,6 @@ const Callback = () => {
             }
         };
 
-        // Get code from URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         

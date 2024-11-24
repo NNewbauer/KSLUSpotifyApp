@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CLIENT_ID = '8572ae1ee0a344a08239363554aaaf86'; // Your Spotify Client ID
+const CLIENT_ID = '8572ae1ee0a344a08239363554aaaf86';
 const REDIRECT_URI =
     process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000/callback'
