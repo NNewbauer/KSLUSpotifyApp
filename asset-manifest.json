@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/KSLUSpotifyApp.github.io/static/css/main.c6133269.css",
-    "main.js": "/KSLUSpotifyApp.github.io/static/js/main.0c6435b4.js",
+    "main.js": "/KSLUSpotifyApp.github.io/static/js/main.3f3f9d07.js",
     "static/js/453.c70b54e8.chunk.js": "/KSLUSpotifyApp.github.io/static/js/453.c70b54e8.chunk.js",
     "index.html": "/KSLUSpotifyApp.github.io/index.html",
     "main.c6133269.css.map": "/KSLUSpotifyApp.github.io/static/css/main.c6133269.css.map",
-    "main.0c6435b4.js.map": "/KSLUSpotifyApp.github.io/static/js/main.0c6435b4.js.map",
+    "main.3f3f9d07.js.map": "/KSLUSpotifyApp.github.io/static/js/main.3f3f9d07.js.map",
     "453.c70b54e8.chunk.js.map": "/KSLUSpotifyApp.github.io/static/js/453.c70b54e8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c6133269.css",
-    "static/js/main.0c6435b4.js"
+    "static/js/main.3f3f9d07.js"
   ]
 }
