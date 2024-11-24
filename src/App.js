@@ -8,7 +8,7 @@ import PlaylistData from './components/PlaylistData';
 
 function App() {
     return (
-        <Router basename = "/">
+        <Router>
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/callback" element={<Callback />} />
