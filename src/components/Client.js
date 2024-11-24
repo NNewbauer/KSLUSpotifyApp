@@ -1,7 +1,10 @@
 import React from 'react';
 
 const CLIENT_ID = '8572ae1ee0a344a08239363554aaaf86'; // Your Spotify Client ID
-const REDIRECT_URI = 'http://localhost:3000/callback'; // Your callback URL
+const REDIRECT_URI =
+    process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000/callback'
+        : 'https://your-github-username.github.io/your-repo-name/callback';
 const SCOPES = [
     'user-read-private',
     'user-read-email',
