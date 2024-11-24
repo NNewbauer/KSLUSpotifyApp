@@ -22,7 +22,6 @@ const Callback = () => {
 
                 const responseText = await response.text();
                 console.log('Raw response:', responseText);
-
                 let data;
                 try {
                     data = JSON.parse(responseText);
