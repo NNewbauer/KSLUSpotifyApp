@@ -4,7 +4,7 @@ const CLIENT_ID = '8572ae1ee0a344a08239363554aaaf86'; // Your Spotify Client ID
 const REDIRECT_URI =
     process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000/callback'
-        : 'https://nnewbauer.github.io/KSLUSpotifyApp.github.io/callback';
+        : 'https://main.d2abiumeuj2ml0.amplifyapp.com/callback';
 const SCOPES = [
     'user-read-private',
     'user-read-email',
