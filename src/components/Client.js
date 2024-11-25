@@ -7,7 +7,6 @@ const REDIRECT_URI =
         : 'https://main.d2abiumeuj2ml0.amplifyapp.com/callback';
 const SCOPES = [
     'user-read-private',
-    'user-read-email',
     'playlist-read-private'];
 const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${SCOPES.join('%20')}`;
 
